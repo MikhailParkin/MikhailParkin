@@ -27,24 +27,29 @@ class Plane(Vehicle):
             raise exceptions.CargoOverload
 
     def remove_all_cargo(self):
-        with open('temp.txt', 'w') as f:
-            f.write(str(self.cargo))
+        # with open('temp.txt', 'w') as f:
+        #     f.write(str(self.cargo))
+        # self.cargo = 0
+        # with open('temp.txt') as f:
+        #     old_cargo = f.read()
+        old_cargo = []
+        old_cargo.append(self.cargo)
         self.cargo = 0
-        with open('temp.txt') as f:
-            old_cargo = f.read()
-        return int(old_cargo)
+        print(old_cargo[0])
+        return int(old_cargo[0])
 
 
-plane = Plane(5000, 22, 33, 44)
-plane2 = Vehicle(22, 33, 44)
-# print('max_cargo', plane.max_cargo)
-# print('cargo', plane.cargo)
-# print('weight', plane2.weight)
-# # print('fuel_consumption', plane.fuel_consumption)
-# # print('fuel', plane.fuel)
-# load = plane.load_cargo(4000)
+# plane = Plane(5000, 22, 33, 44)
+# plane2 = Vehicle(22, 33, 44)
+# # print('max_cargo', plane.max_cargo)
+# # print('cargo', plane.cargo)
+# # print('weight', plane2.weight)
+# # # print('fuel_consumption', plane.fuel_consumption)
+# # # print('fuel', plane.fuel)
+# # load = plane.load_cargo(4000)
 # rem = plane.remove_all_cargo()
 # print('remove', rem)
+#
 # print(print('cargo_null', plane.cargo))
 # print(plane.cargo)
 
