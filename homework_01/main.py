@@ -1,4 +1,4 @@
-# my_numbers = [i for i in range(1, 100)]
+my_numbers = [i for i in range(1, 100)]
 
 ODD = 'ODD'
 EVEN = 'EVEN'
@@ -41,5 +41,5 @@ def filter_numbers(my_numbers, type_sort):
 
 # print(filter_numbers(my_numbers, ODD))
 # print(filter_numbers(my_numbers, EVEN))
-# print(filter_numbers(my_numbers, PRIME))
-# print(filter_numbers([1, 4, 7, 8, 33], PRIME))
+print(filter_numbers(my_numbers, PRIME))
+print(filter_numbers([1, 4, 7, 8, 33], ODD))
