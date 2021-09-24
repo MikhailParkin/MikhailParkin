@@ -29,11 +29,9 @@ class Vehicle:
                 raise exceptions.LowFuelError
 
     def move(self, distance):
-        need_fuel = distance / (self.fuel_consumption / 100)
-        if need_fuel <= self.fuel:
-            self.fuel = self.fuel - need_fuel
+        in_stock_fuel = self.fuel
+        need_fuel = (distance / 100) * self.fuel_consumption
+        if need_fuel < in_stock_fuel:
+            self.fuel = in_stock_fuel - need_fuel
         else:
             raise exceptions.NotEnoughFuel
-
-
-
