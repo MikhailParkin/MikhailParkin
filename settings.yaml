@@ -1,0 +1,4 @@
+ldap_url : "ip.ip.ip.ip"
+username : "user@domain.local"
+password : "password"
+search_base : "DC=domain,DC=local"
