@@ -30,7 +30,6 @@ class Vehicle:
 
     def move(self, distance):
         in_stock_fuel = self.fuel
-        # need_fuel = (distance / 100) * self.fuel_consumption
         need_fuel = distance * self.fuel_consumption
         if need_fuel <= in_stock_fuel:
             self.fuel = in_stock_fuel - need_fuel
