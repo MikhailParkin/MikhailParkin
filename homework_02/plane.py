@@ -21,19 +21,12 @@ class Plane(Vehicle):
 
     def load_cargo(self, new_cargo):
         overload = self.cargo + new_cargo
-        if overload < self.max_cargo:
+        if overload <= self.max_cargo:
             self.cargo = overload
         else:
             raise exceptions.CargoOverload
 
     def remove_all_cargo(self):
-        # with open('temp.txt', 'w') as f:
-        #     f.write(str(self.cargo))
-        # self.cargo = 0
-        # with open('temp.txt') as f:
-        #     old_cargo = f.read()
-        old_cargo = []
-        old_cargo.append(self.cargo)
+        old_cargo = self.cargo
         self.cargo = 0
-        print(old_cargo[0])
-        return int(old_cargo[0])
+        return old_cargo
