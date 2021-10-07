@@ -1,3 +1,4 @@
+import os
 import sys
 import subprocess
 
@@ -7,6 +8,7 @@ from PyQt5 import QtGui
 from PyQt5 import QtCore
 from ldap3 import Connection, AUTO_BIND_NO_TLS, SUBTREE
 
+import dlg
 import gui
 import threading
 import re
@@ -14,64 +16,73 @@ import yaml
 
 
 class ParentWindow(QMainWindow, gui.Ui_MainWindow):
-    ldap_url = None
-    username = None
-    password = None
-    search_base = None
+    ldap_url = '1.1.1.1'
+    username = 'username'
+    password = 'password'
+    search_base = 'DC=kesk,DC=local'
 
     def load_settings(self):
+        if os.path.exists('settings.yaml') is not True:
+            config = {'username': self.username, 'ldap_url': self.ldap_url, 'password': self.password,
+                      'search_base': self.search_base}
+            print(config)
+            with open('settings.yaml', 'w') as f:
+                yaml.dump(config, f)
+            self.edit_settings()
+
         with open('settings.yaml', 'r') as f:
             config = yaml.safe_load(f)
         self.username = config.get('username')
         self.ldap_url = config.get('ldap_url')
         self.password = config.get('password')
         self.search_base = config.get('search_base')
+        return config
 
     def search_domain(self, my_comp):
 
         if len(my_comp) < 1:
             self.empty_line()
+            return
 
-        else:
-            search_filter = '(&(objectClass=computer)(description=*' + my_comp + '*))'
-            attributes = ['cn', 'description', 'lastLogon', 'name']
-            entries = ParentWindow.ldap_conn(self, search_filter, attributes)
-            row_count = len(entries)
-            table = self.tableWidget
-            table.setColumnCount(2)
-            table.setRowCount(row_count)
-            _translate = QtCore.QCoreApplication.translate
-            item = QtWidgets.QTableWidgetItem()
-            font = QtGui.QFont()
-            font.setPointSize(12)
-            item.setFont(font)
-            table.setHorizontalHeaderItem(0, item)
-            item = QtWidgets.QTableWidgetItem()
-            font = QtGui.QFont()
-            font.setPointSize(12)
-            item.setFont(font)
-            table.setHorizontalHeaderItem(1, item)
-            item = table.horizontalHeaderItem(0)
-            item.setText(_translate("MainWindow", "Computer"))
-            item = table.horizontalHeaderItem(1)
-            item.setText(_translate("MainWindow", "Name"))
-            table.horizontalHeaderItem(0).setTextAlignment(QtCore.Qt.AlignLeft)
-            item = QtWidgets.QTableWidgetItem()
-            font = QtGui.QFont()
-            font.setPointSize(12)
-            item.setFont(font)
-            table.horizontalHeaderItem(1).setTextAlignment(QtCore.Qt.AlignLeft)
-            item = QtWidgets.QTableWidgetItem()
-            font = QtGui.QFont()
-            font.setPointSize(12)
-            item.setFont(font)
-            for row in range(row_count):
-                a = str(entries[row]['description'])
-                b = str(entries[row]['name'])
-                for i in range(1):
-                    table.setItem(row, i, QtWidgets.QTableWidgetItem(b))
-                    table.setItem(row, i + 1, QtWidgets.QTableWidgetItem(a))
-                    table.resizeColumnsToContents()
+        search_filter = '(&(objectClass=computer)(description=*' + my_comp + '*))'
+        attributes = ['cn', 'description', 'lastLogon', 'name']
+        entries = ParentWindow.ldap_conn(self, search_filter, attributes)
+        row_count = len(entries)
+        table = self.tableWidget
+        table.setColumnCount(2)
+        table.setRowCount(row_count)
+        _translate = QtCore.QCoreApplication.translate
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        table.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        table.setHorizontalHeaderItem(1, item)
+        item = table.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Computer"))
+        item = table.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Name"))
+        table.horizontalHeaderItem(0).setTextAlignment(QtCore.Qt.AlignLeft)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        table.horizontalHeaderItem(1).setTextAlignment(QtCore.Qt.AlignLeft)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        for row in range(row_count):
+            a = str(entries[row]['description'])
+            b = str(entries[row]['name'])
+            for i in range(1):
+                table.setItem(row, i, QtWidgets.QTableWidgetItem(b))
+                table.setItem(row, i + 1, QtWidgets.QTableWidgetItem(a))
+                table.resizeColumnsToContents()
 
     def search_phone(self, my_user):
 
@@ -175,6 +186,14 @@ class ParentWindow(QMainWindow, gui.Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.lineEdit.text()
+        self.dlg = QDialog()
+        self.dlg.setWindowTitle("Loading")
+        self.dlg.setWindowModality(False)
+        self.dlg.setFixedSize(300, 270)
+        self.dlg.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.CustomizeWindowHint)
+        self.label = QtWidgets.QLabel(self.dlg)
+        self.label.setGeometry(-50, -40, 350, 350)
+        self.child_window = ChildWindow()
         self.pushButton.clicked.connect(lambda: self.search_domain(my_comp=self.lineEdit.text()))
         self.pushButton_2.clicked.connect(self.select_comp)
         self.pushButton.setAutoDefault(True)
@@ -185,9 +204,12 @@ class ParentWindow(QMainWindow, gui.Ui_MainWindow):
         self.lineEdit_3.returnPressed.connect(self.pushButton_7.click)
         self.pushButton_excel.clicked.connect(self.kill_excel)
         self.pushButton_word.clicked.connect(self.kill_word)
-        self.pushButton_service.clicked.connect(self.serv)
+        self.pushButton_disk.clicked.connect(self.disc_c)
         self.lineEdit.setFocus()
         self.load_settings()
+        self.actionExit.triggered.connect(qApp.quit)
+        self.actionSettings.triggered.connect(self.edit_settings)
+        self.movie = QtGui.QMovie("loading-52.gif")
 
     def ldap_conn(self, search_filter, attributes):
         conn = Connection(self.ldap_url, auto_bind=AUTO_BIND_NO_TLS, user=self.username, password=self.password)
@@ -306,6 +328,60 @@ class ParentWindow(QMainWindow, gui.Ui_MainWindow):
             self.listWidget.addItem(str(command_excel))
 
         serv_start(server='ia-sapp-fl06')
+
+    def on_start(self):
+        threading.Thread(target=self.show_gif_start(), args=(self,)).start()
+
+    def show_gif_start(self):
+        self.dlg.show()
+        self.label.setMovie(self.movie)
+        self.movie.start()
+
+    def show_gif_stop(self):
+        self.movie.stop()
+        self.dlg.close()
+
+    def disc_c(self):
+
+        def new_thread(obj):
+            comp = obj.tableWidget.currentIndex().data()
+            command_exp = str(fr'explorer \\{comp}\c$')
+            proc = subprocess.run(command_exp, stdout=subprocess.PIPE, encoding='cp866')
+        threading.Thread(target=new_thread, args=(self,)).start()
+
+    def reboot(self):
+
+        def new_thread(obj):
+            comp = obj.tableWidget.currentIndex().data()
+            command_exp = str(fr'shutdown /r /m \\{comp} /f')
+            proc = subprocess.run(command_exp, stdout=subprocess.PIPE, encoding='cp866')
+        threading.Thread(target=new_thread, args=(self,)).start()
+
+    def edit_settings(self):
+        self.child_window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.child_window.show()
+        config = self.load_settings()
+        self.child_window.lineEdit.setText(config.get('username'))
+        self.child_window.lineEdit_2.setText(config.get('password'))
+        self.child_window.lineEdit_3.setText(config.get('ldap_url'))
+        self.child_window.lineEdit_4.setText(config.get('search_base'))
+        self.child_window.accepted.connect(self.accept_settings)
+
+    def accept_settings(self):
+        config = self.load_settings()
+        config['username'] = self.child_window.lineEdit.text()
+        config['password'] = self.child_window.lineEdit_2.text()
+        config['ldap_url'] = self.child_window.lineEdit_3.text()
+        config['search_base'] = self.child_window.lineEdit_4.text()
+        with open('settings.yaml', 'w') as f:
+            yaml.dump(config, f)
+        self.load_settings()
+
+
+class ChildWindow(QDialog, dlg.Ui_Dialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
 
 if __name__ == '__main__':

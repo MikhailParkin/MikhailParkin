@@ -81,10 +81,8 @@ class ParentWindow(QMainWindow, report_gui.Ui_MainWindow):
         FROM asterisk.cdr cdr 
         left outer join asterisk.obzvon_number obz on 
         obz.num = cdr.src and obz.lic = cdr.accountcode
-        where year(calldate) = {self.year_start}
-        and month(calldate) = {self.month_start}
-        and day(calldate) >= {self.day_start} 
-        and day(calldate) <= {self.day_end}
+        where calldate >= '{self.year_start}-{self.month_start}-{self.day_start}'
+        and calldate <= '{self.year_end}-{self.month_end}-{self.day_end}'
         group by  accountcode, dst
         order by count(*);
         """
@@ -104,39 +102,23 @@ class ParentWindow(QMainWindow, report_gui.Ui_MainWindow):
 
     def save_xlsx(self, calls):
 
-        # Create an new Excel file and add a worksheet.
-        try:
-            workbook = xlsxwriter.Workbook(f'Отчёт{self.year_start}{self.month_start}{self.day_end}.xlsx')
-        except FileExistsError as e:
-            self.alert_message('Ошибка', 'Файл не создан')
-        worksheet = workbook.add_worksheet()
-
-        # Widen the first column to make the text clearer.
-        worksheet.set_column('A:A', 15)
-        worksheet.set_column('B:B', 18)
-        worksheet.set_column('C:C', 10)
-        worksheet.set_column('D:D', 18)
-        worksheet.set_column('E:E', 18)
-        worksheet.set_column('F:F', 18)
-
-        # Add a bold format to use to highlight cells.
-        # bold = workbook.add_format({'bold': True})
-        # header = workbook.add_format()
-
-        # Write some simple text. 'Лицевой', 'Номер телефона', 'Попыток', 'Успешных дозвонов', 'Время разговора', 'Сумма задолжности'
-        worksheet.write('A1', 'Лицевой')
-        worksheet.write('B1', 'Номер телефона')
-        worksheet.write('C1', 'Попыток')
-        worksheet.write('D1', 'Успешных дозвонов')
-        worksheet.write('E1', 'Время разговора')
-        worksheet.write('F1', 'Сумма задолжности')
-
-        # Write some numbers, with row/column notation.
-        for row_number, call in enumerate(calls):
-            for value, values in enumerate(call):
-                worksheet.write(row_number + 1, value, values)
-
-        workbook.close()
+        with xlsxwriter.Workbook(f'Отчёт{self.year_start}{self.month_start}{self.day_end}.xlsx') as workbook:
+            worksheet = workbook.add_worksheet()
+            worksheet.set_column('A:A', 15)
+            worksheet.set_column('B:B', 18)
+            worksheet.set_column('C:C', 10)
+            worksheet.set_column('D:D', 18)
+            worksheet.set_column('E:E', 18)
+            worksheet.set_column('F:F', 18)
+            worksheet.write('A1', 'Лицевой')
+            worksheet.write('B1', 'Номер телефона')
+            worksheet.write('C1', 'Попыток')
+            worksheet.write('D1', 'Успешных дозвонов')
+            worksheet.write('E1', 'Время разговора')
+            worksheet.write('F1', 'Сумма задолжности')
+            for row_number, call in enumerate(calls):
+                for value, values in enumerate(call):
+                    worksheet.write(row_number + 1, value, values)
         self.alert_message('', f'Файл создан, сохранено {len(calls)} записей')
 
 
