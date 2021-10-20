@@ -1,7 +1,9 @@
-# docker run -p 8000:8000 my_app
+# docker run my_app
 FROM python:3.9-buster
 
 WORKDIR /var/app
+
+EXPOSE 8000/tcp
 
 #RUN apt update && apt upgrade
 
