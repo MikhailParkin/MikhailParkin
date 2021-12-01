@@ -1,1 +1,4 @@
 docker==5.0.3
+aiohttp
+asyncpg
+SQLAlchemy>=1.4
