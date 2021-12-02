@@ -41,10 +41,10 @@ async def fetch_posts():
     return json_data
 
 
-def main():
-    asyncio.run(fetch_users())
-    asyncio.run(fetch_posts())
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     asyncio.run(fetch_users())
+#     asyncio.run(fetch_posts())
+#
+#
+# if __name__ == '__main__':
+#     main()
