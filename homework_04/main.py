@@ -58,7 +58,8 @@ async def async_main():
 
 
 def main():
-    asyncio.run(async_main())
+    # asyncio.run(async_main()) # on windows get bug with "run"
+    asyncio.get_event_loop().run_until_complete(async_main())
 
 
 if __name__ == "__main__":
