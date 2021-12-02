@@ -53,17 +53,19 @@ Base = declarative_base(cls=Base)
 
 
 class User(Base):
-    def __init__(self, name: str, username: str, email: str):
+    def __init__(self, name: str, username: str, email: str, website: str):
         self.name = name
         self.username = username
         self.email = email
+        self.website = website
 
     def __repr__(self):
-        return "<User('%s','%s', '%s')>" % (self.name, self.username, self.email)
+        return "<User('%s','%s', '%s')>" % (self.name, self.username, self.email, self.website)
 
     name = Column(String, nullable=False)
     username = Column(String, nullable=False, unique=True)
     email = Column(String, unique=True)
+    website = Column(String)
 
     posts = relationship("Post", back_populates="user")
 

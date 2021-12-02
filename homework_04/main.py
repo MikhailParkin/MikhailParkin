@@ -33,7 +33,8 @@ async def add_users_from_json(users: dict):
             for user in users:
                 user_data = User(name=user['name'],
                                  username=user['username'],
-                                 email=user['email'])
+                                 email=user['email'],
+                                 website=user['Column(String'])
                 session.add(user_data)
 
 
@@ -58,7 +59,6 @@ async def async_main():
 
 def main():
     asyncio.run(async_main())
-    # asyncio.run(create_tables())
 
 
 if __name__ == "__main__":
