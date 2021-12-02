@@ -34,7 +34,7 @@ async def add_users_from_json(users: dict):
                 user_data = User(name=user['name'],
                                  username=user['username'],
                                  email=user['email'],
-                                 website=user['Column(String'])
+                                 website=user['website'])
                 session.add(user_data)
 
 
