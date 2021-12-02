@@ -58,7 +58,9 @@ class User(Base):
         self.username = username
         self.email = email
 
-    id = Column(Integer, primary_key=True)
+    def __repr__(self):
+        return "<User('%s','%s', '%s')>" % (self.name, self.username, self.email)
+
     name = Column(String, nullable=False)
     username = Column(String, nullable=False, unique=True)
     email = Column(String, unique=True)
@@ -72,7 +74,9 @@ class Post(Base):
         self.title = title
         self.body = body
 
-    id = Column(Integer, primary_key=True)
+    def __repr__(self):
+        return "<Post('%s','%s', '%s')>" % (self.user_id, self.title, self.body)
+
     user_id = Column(ForeignKey(User.id), nullable=False)
     title = Column(String)
     body = Column(Text)
