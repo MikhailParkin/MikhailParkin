@@ -81,6 +81,6 @@ class Post(Base):
     title = Column(String)
     body = Column(Text)
 
-    user = relationship("User", back_populates="post")
+    user = relationship("User", back_populates="posts")
 
 
