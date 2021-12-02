@@ -53,7 +53,7 @@ class ParentWindow(QMainWindow, report_gui.Ui_MainWindow):
         self.dlg_m.setInformativeText(message)
 
     def load_settings(self):
-        with open('Report/settings.yaml', 'r') as f:
+        with open('settings.yaml', 'r') as f:
             config = yaml.safe_load(f)
         self.username_sql = config.get('username')
         self.password_sql = config.get('password')

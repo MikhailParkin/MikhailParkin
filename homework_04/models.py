@@ -18,7 +18,6 @@
 """
 
 import os
-import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship, declared_attr, InstrumentedAttribute
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
@@ -54,8 +53,7 @@ Base = declarative_base(cls=Base)
 
 
 class User(Base):
-    def __init__(self, id: int, name: str, username: str, email: str):
-        self.id = id
+    def __init__(self, name: str, username: str, email: str):
         self.name = name
         self.username = username
         self.email = email
@@ -69,8 +67,7 @@ class User(Base):
 
 
 class Post(Base):
-    def __init__(self, id: int, user_id: int, title: str, body: str):
-        self.id = id
+    def __init__(self, user_id: int, title: str, body: str):
         self.user_id = user_id
         self.title = title
         self.body = body

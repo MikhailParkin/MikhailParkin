@@ -19,13 +19,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def async_main():
-    await create_tables()
-    users, posts = await asyncio.gather(fetch_users(), fetch_posts())
-    await add_users_from_json(users)
-    await add_posts_from_json(posts)
-
-
 async def create_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
@@ -56,9 +49,16 @@ async def add_posts_from_json(posts: dict):
                 session.add(post_data)
 
 
+async def async_main():
+    await create_tables()
+    users, posts = await asyncio.gather(fetch_users(), fetch_posts())
+    await add_users_from_json(users)
+    await add_posts_from_json(posts)
+
+
 def main():
-    # asyncio.run(async_main())
-    asyncio.run(create_tables())
+    asyncio.run(async_main())
+    # asyncio.run(create_tables())
 
 
 if __name__ == "__main__":
