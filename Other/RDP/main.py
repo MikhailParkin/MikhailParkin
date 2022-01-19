@@ -45,7 +45,7 @@ class ParentWindow(QMainWindow, gui.Ui_MainWindow):
             return
 
         search_filter = '(&(objectClass=computer)(description=*' + my_comp + '*))'
-        attributes = ['cn', 'description', 'lastLogon', 'name']
+        attributes = ['description', 'lastLogon', 'name']
         entries = ParentWindow.ldap_conn(self, search_filter, attributes)
         row_count = len(entries)
         table = self.tableWidget
@@ -83,6 +83,8 @@ class ParentWindow(QMainWindow, gui.Ui_MainWindow):
                 table.setItem(row, i, QtWidgets.QTableWidgetItem(b))
                 table.setItem(row, i + 1, QtWidgets.QTableWidgetItem(a))
                 table.resizeColumnsToContents()
+        print(entries)
+
 
     def search_phone(self, my_user):
 
