@@ -21,7 +21,10 @@
         <tr><td><a href="{{ url_for("post_app.details_post", author_id=author.id) }}"> {{ author.name }} </a></td><td>{{ author.email }}</td></tr>
         {% endfor %}
   </tbody>
+ </table>
+</div>
 <div>
+    <input class="btn btn-success my-2" type="submit" value="Add author" onclick="href='{{ url_for("post_app.posts") }}'">
     <a href="{{ url_for("author_app.add") }}">
         Add new author
     </a>
