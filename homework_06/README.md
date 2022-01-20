@@ -15,4 +15,11 @@
 
 
 docker-compose -f docker-compose.yml up
+flask db init
+flask db migrate
+flask db upgrade
+
+
+
+
 

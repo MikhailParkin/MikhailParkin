@@ -15,14 +15,17 @@
 - Flask приложение настроено для запуска в production режиме (uwsgi, nginx, gunicorn)
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_migrate import Migrate
-from views.table_comp import table_app
+# from views.table_comp import table_app
 
-from models import db
+from models import db, add_test_data
+from views.author import author_app
+from views.posts import post_app
 
 app = Flask(__name__)
-app.register_blueprint(table_app, url_prefix="/table/")
+app.register_blueprint(author_app, url_prefix="/list/")
+app.register_blueprint(post_app, url_prefix="/posts/")
 
 app.config.update(
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
@@ -34,8 +37,10 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
-@app.route("/", endpoint="index")
+@app.route("/", methods=["GET", "POST"], endpoint="index")
 def root():
+    if request.method == "POST":
+        add_test_data()
     return render_template("index.html")
 
 
