@@ -11,15 +11,21 @@ post_app = Blueprint("post_app", __name__)
 
 @post_app.route("/", endpoint="posts")
 def list_authors():
-    posts = Post.query.all()
+    posts = Post.query.join(Author).all()
     return render_template("posts/list_posts.html", posts=posts)
 
 
 @post_app.route("/<int:author_id>/", endpoint="details_post")
 def get_author_by_id(author_id: int):
     posts = Post.query.join(Author).filter_by(id=author_id).all()
-    author = Author.query.get(author_id)
-    return render_template("posts/post_detail.html", posts=posts, author=author)
+    return render_template("posts/post_detail.html", posts=posts)
+
+
+@post_app.route("/body/<int:post_id>/", endpoint="post_body")
+def get_post_by_id(post_id: int):
+    post = Post.query.get(post_id)
+    author = Author.query.get(post.user_id)
+    return render_template("posts/post_body.html", post=post, author=author)
 
 
 @post_app.route("/author_add/", endpoint="add")

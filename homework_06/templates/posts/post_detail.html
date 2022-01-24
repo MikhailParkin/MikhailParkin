@@ -18,7 +18,8 @@
         </thead>
   <tbody>
         {% for post in posts %}
-        <tr><td> {{ author.name }} </td><td>{{ post.title }}</td></tr>
+        <tr><td> {{ post.author.name }} </td>
+        <td><a href="{{ url_for('post_app.post_body', post_id=post.id) }}"> {{ post.title }} <a></a></td></tr>
         {% endfor %}
   </tbody>
     </table>

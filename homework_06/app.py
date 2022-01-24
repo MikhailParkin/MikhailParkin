@@ -17,7 +17,6 @@
 
 from flask import Flask, render_template, request
 from flask_migrate import Migrate
-# from views.table_comp import table_app
 
 from models import db, add_test_data
 from views.author import author_app
@@ -51,3 +50,4 @@ def about():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
