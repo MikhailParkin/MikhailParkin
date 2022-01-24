@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  Author #{{ authors.name }}
+{% endblock %}
+
+{% block body %}
+  <h1> Author details </h1>
+  <div>
+    <h3>
+     <a href="{{ url_for('post_app.details_post', author_id=authors.id) }}"> {{ authors.name }}</a>
+    </h3>
+    Username: {{ authors.username }}
+    <br>
+    E-mail: {{ authors.email }}
+  </div>
+
+  <br>
+  <div>
+    <a class="btn btn-success my-2" href="{{ url_for('author_app.authors') }}">
+      Back to Authors list
+    </a>
+  </div>
+{% endblock %}

@@ -14,6 +14,7 @@
 - в приложении есть страница, которая выдаёт доступные записи (вытаскивает из БД)
 - Flask приложение настроено для запуска в production режиме (uwsgi, nginx, gunicorn)
 """
+import os
 
 from flask import Flask, render_template, request
 from flask_migrate import Migrate
@@ -26,10 +27,12 @@ app = Flask(__name__)
 app.register_blueprint(author_app, url_prefix="/list/")
 app.register_blueprint(post_app, url_prefix="/posts/")
 
-app.config.update(
-    SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://app:password@localhost:5432/blog"
-)
+CONFIG_OBJ_PATH = "config.{}".format(os.getenv("CONFIG", "DevelopmentConfig"))
+app.config.from_object(CONFIG_OBJ_PATH)
+# app.config.update(
+#     SQLALCHEMY_TRACK_MODIFICATIONS=False,
+#     SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://app:password@localhost:5432/blog"
+# )
 
 db.init_app(app)
 
