@@ -9,7 +9,7 @@
 <h1>Authors:</h1>
 
 <div>
-    <table class="table table-dark table-striped">
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">Author</th>
@@ -18,14 +18,13 @@
       </thead>
   <tbody>
         {% for author in authors %}
-        <tr><td><a href="{{ url_for('post_app.details_post', author_id=author.id) }}"> {{ author.name }} </a></td>
-            <td>{{ author.email }}</td></tr>
+        <tr><td><a href="{{ url_for("post_app.details_post", author_id=author.id) }}"> {{ author.name }} </a></td><td>{{ author.email }}</td></tr>
         {% endfor %}
   </tbody>
  </table>
 </div>
 <div>
-    <a class="btn btn-success my-2" href="{{ url_for('author_app.add') }}">
+    <a class="btn btn-success my-2" href="{{ url_for("author_app.add") }}">
         Add author
     </a>
 </div>
