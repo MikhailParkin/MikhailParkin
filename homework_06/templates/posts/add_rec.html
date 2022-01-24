@@ -8,23 +8,16 @@
 {% block body %}
 
 <div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Author</th>
-          <th scope="col">e-mail</th>
-        </tr>
-      </thead>
-  <tbody>
-        {% for author in authors %}
-        <tr><td><a href="{{ url_for('author_app.details', author_id=author.id) }}"> {{ author.name }} </a></td><td>{{ author.email }}</td></tr>
+    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+        <option selected>Open this select menu</option>
+      {% for author in authors %}
+        <option value="{{ author.id }}"> {{ author.name }} </option>
         {% endfor %}
-  </tbody>
- </table>
+    </select>
 </div>
 <div>
     <a class="btn btn-success my-2" href="{{ url_for('author_app.add') }}">
-        Add author
+        Add item
     </a>
 </div>
 {% endblock %}
