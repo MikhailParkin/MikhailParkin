@@ -5,6 +5,8 @@ ENV PYTHONBUFFERED=1
 WORKDIR /app
 
 COPY requirements.txt .
+COPY prestart.sh .
+
 
 RUN pip install -r requirements.txt
 
