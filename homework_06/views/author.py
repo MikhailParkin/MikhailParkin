@@ -4,8 +4,9 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from sqlalchemy.exc import DatabaseError, IntegrityError
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from homework_06.models import db, Author
-from homework_06.views.forms.author import AuthorForm
+from models import db, Author
+from views.forms.author import AuthorForm
+
 
 author_app = Blueprint("author_app", __name__)
 
@@ -40,7 +41,7 @@ def save_author(author_name, author_email):
     except DatabaseError:
         db.session.rollback()
         logging.exception("got db error!")
-        raise InternalServerError(f"could not save product with name {author_name}!")
+        raise InternalServerError(f"could not save author with name {author_name}!")
 
 
 @author_app.route("/author_add/", methods=["GET", "POST"], endpoint="add")

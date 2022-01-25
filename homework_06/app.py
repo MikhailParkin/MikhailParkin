@@ -29,10 +29,6 @@ app.register_blueprint(post_app, url_prefix="/posts/")
 
 CONFIG_OBJ_PATH = "config.{}".format(os.getenv("CONFIG", "DevelopmentConfig"))
 app.config.from_object(CONFIG_OBJ_PATH)
-# app.config.update(
-#     SQLALCHEMY_TRACK_MODIFICATIONS=False,
-#     SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://app:password@localhost:5432/blog"
-# )
 
 db.init_app(app)
 
@@ -52,5 +48,5 @@ def about():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
 

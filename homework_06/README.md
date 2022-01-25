@@ -20,6 +20,10 @@ flask db migrate
 flask db upgrade
 
 
+docker-compose build blog-prod
+docker-compose up blog-prod
+
+
 
 
 

@@ -3,8 +3,9 @@ import logging
 from flask import Blueprint, render_template, request, redirect, url_for
 from sqlalchemy.exc import DatabaseError, IntegrityError
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from views.forms.author import PostForm
 
-from homework_06.models import db, Post, Author
+from models import db, Post, Author
 
 post_app = Blueprint("post_app", __name__)
 
@@ -28,6 +29,27 @@ def get_post_by_id(post_id: int):
     return render_template("posts/post_body.html", post=post, author=author)
 
 
-@post_app.route("/author_add/", endpoint="add")
+def save_post(title):
+    try:
+        db.session.commit()
+    except DatabaseError:
+        db.session.rollback()
+        logging.exception("got db error!")
+        raise InternalServerError(f"could not save post with title {title}!")
+
+
+@post_app.route("/post_add/", methods=["GET", "POST"], endpoint="add")
 def author_add():
-    pass
+    form = PostForm()
+    if request.method == "GET":
+        authors = Author.query.order_by(Author.id).all()
+        return render_template("posts/add_rec.html", authors=authors, form=form)
+
+    if not form.validate_on_submit():
+        return render_template("posts/add_rec.html", form=form)
+    user = form.data['user_id']
+    user_id = user.id
+    post = Post(user_id=user_id, title=form.data["title"], body=form.data["body"])
+    db.session.add(post)
+    save_post(post.title)
+    return redirect(url_for("post_app.post_body", post_id=post.id))

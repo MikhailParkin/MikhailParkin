@@ -8,16 +8,19 @@
 {% block body %}
 
 <div>
-    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-        <option selected>Open this select menu</option>
-      {% for author in authors %}
-        <option value="{{ author.id }}"> {{ author.name }} </option>
-        {% endfor %}
-    </select>
+    <h2>Select Author:</h2>
 </div>
 <div>
-    <a class="btn btn-success my-2" href="{{ url_for('author_app.add') }}">
-        Add item
-    </a>
+    <div>
+    <form method="post">
+      {{ form.csrf_token }}
+      {{ form.user_id(class="form-select") }}
+      {{ form.title.label(class="form-label") }}
+      {{ form.title(class="form-control") }}
+      {{ form.body.label(class="form-label") }}
+      {{ form.body(class="form-control") }}
+      <br>
+    <input class="btn btn-success my-2" type="submit" value="Add item">
+    </form>
 </div>
 {% endblock %}
