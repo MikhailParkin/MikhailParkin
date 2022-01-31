@@ -17,7 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from blog.settings import DEBUG
 
+import authors.views as authors
+
 urlpatterns = [
+    path('', authors.index),
+    path('posts/', authors.list_posts),
     path('admin/', admin.site.urls),
 ]
 
