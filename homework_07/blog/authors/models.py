@@ -4,8 +4,8 @@ from django.db import models
 
 
 class Authors(models.Model):
-    name = models.CharField(max_length=64)
-    email = models.EmailField()
+    name = models.CharField(max_length=64, unique=True)
+    email = models.EmailField(unique=True)
     rating = models.IntegerField()
 
     def __str__(self):
