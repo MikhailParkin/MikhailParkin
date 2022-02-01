@@ -1,5 +1,4 @@
 from django.urls import path
-from django.views.generic import TemplateView
 
 import authors.views as authors
 

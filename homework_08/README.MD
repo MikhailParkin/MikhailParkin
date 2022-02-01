@@ -1,3 +1,8 @@
+Для загрузки тестовых данных можно запустить "python manage.py fill.db", 
+подгрузятся данные с https://jsonplaceholder.typicode.com
+
+
+
 pip install django==3.2
 pip install django-debug-toolbar==3.2.3
 django-admin --help
