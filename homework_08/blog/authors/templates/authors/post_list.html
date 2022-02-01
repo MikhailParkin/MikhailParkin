@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Post List
+{% endblock %}
+{% block body %}
+<h1>Welcome!</h1>
+<ul>
+    <a class="btn btn-primary my-2" href="{% url 'authors:index' %}">Main</a>
+
+    <div class="posts-list">
+    <ul class="list-group list-group-flush">
+        {% for item in post_list %}
+            <li class="list-group-item">
+                {{ item }}
+                <a href="{% url 'authors:post_detail' item.id %}">Detail</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+    </div>
+       <nav aria-label="...">
+       <ul class="pagination pagination-sm">
+<!--           <li class="page-item active" aria-current="page">-->
+<!--               <span class="page-link">{{ page_obj.number }}</span>-->
+<!--           </li>-->
+        {% if page_obj.has_previous %}
+           <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+           <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+        {% endif %}
+
+           <li class="page-item active" aria-current="page">
+               <span class="page-link">{{ page_obj.number }}</span>
+           </li>
+<!--        <span class="current">-->
+<!--            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.-->
+<!--        </span>-->
+
+        {% if page_obj.has_next %}
+           <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+           <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+        </ul>
+        </nav>
+
+</ul>
+{% endblock %}

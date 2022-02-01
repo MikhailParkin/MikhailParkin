@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+        Authors
+{% endblock %}
+{% block body %}
+
+<h1>Welcome!</h1>
+<ul>
+    <li>
+        <a class="btn btn-primary my-2" href="{% url 'authors:index' %}">Main</a>
+    </li>
+    <div class="posts-list">
+    <ul  class="list-group list-group-flush">
+        {% for item in authors_list %}
+            <li class="list-group-item">
+                {{ item }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</ul>
+
+{% endblock %}
