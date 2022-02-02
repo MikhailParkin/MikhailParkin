@@ -9,6 +9,27 @@
             {% endblock %}
     </title>
 </head>
+<header>
+  <div class="container-fluid">
+<div class="row">
+
+    <div class="col-md-4">
+    <a class="btn btn-primary my-2" href="{% url 'authors:index' %}">Main</a>
+    <a class="btn btn-primary my-2"href="{% url 'authors:authors_list' %}">Authors list</a>
+    <a class="btn btn-primary my-2" href="{% url 'authors:posts_list' %}">Posts list</a>
+    </div>
+
+
+    <div class="col-md-5"></div>
+  <div class="col-md-2">
+      <a class="btn btn-light my-2">Login</a>
+      <a class="btn btn-light my-2">Register</a>
+  </div>
+
+  </div>
+</div>
+</header>
+
 <body>
 
     <div>
