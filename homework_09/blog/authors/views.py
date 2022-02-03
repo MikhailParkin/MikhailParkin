@@ -2,6 +2,8 @@ from django.db.models import Count
 from django.shortcuts import render
 from authors.models import Post
 
+from myauth.models import MyUser
+
 from django.views.generic import ListView, DetailView
 
 
@@ -24,14 +26,14 @@ class PostDetailView(DetailView):
 
 
 class AuthorsListView(ListView):
-    model = Post
+    model = MyUser
     template_name = 'authors/author_list.html'
 
     def get_queryset(self):
         qs = super().get_queryset()
         # qs = qs.values('name_id').annotate(dcount=Count('name_id')).order_by('name_id')
         # qs = qs.filter('first_name', 'last_name').order_by('name_id')
-        qs = qs.select_related('name').all()
+        # qs = qs.select_related('name').all()
         print(qs)
         return qs
 

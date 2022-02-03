@@ -11,7 +11,7 @@
     <ul  class="list-group list-group-flush">
         {% for item in object_list %}
             <li class="list-group-item">
-                {{ item.name }}
+                {{ item.first_name }} {{ item.last_name }}
             </li>
         {% endfor %}
     </ul>
