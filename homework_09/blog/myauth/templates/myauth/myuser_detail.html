@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block body %}
+<h1>{{ object.first_name }} {{ object.last_name }}</h1>
+  <div>
+      <h4>Username: {{ object.username|safe }}</h4>
+  </div>
+
+  <div>
+      <h4>Register: {{ object.date_joined|safe }}</h4>
+  </div>
+
+
+
+    <div>
+        <a class="btn btn-primary my-2" href="{% url 'myauth:user_update' user.id %}">Edit</a>
+    </div>
+
+{% endblock %}
