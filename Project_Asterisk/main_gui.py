@@ -161,7 +161,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Dial_Asterisk"))
         self.toolButton.setText(_translate("MainWindow", "..."))
-        self.label.setText(_translate("MainWindow", "Выбирете файл со списком обонентов:"))
+        self.label.setText(_translate("MainWindow", "Выбирете файл со списком абонентов:"))
         self.label_2.setText(_translate("MainWindow", "Дата начала обзвона:"))
         self.pushButton.setText(_translate("MainWindow", "Начать"))
         self.label_3.setText(_translate("MainWindow", "Физические лица"))
