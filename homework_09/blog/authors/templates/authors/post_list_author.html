@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ posts.name }}
+{% endblock %}
+
+{% block body %}
+<ul>
+
+    <div class="posts-list">
+    <ul class="list-group list-group-flush">
+        {% for item in posts %}
+            <li class="list-group-item">
+                {{ item }}
+                <a href="{% url 'authors:post_detail' item.id %}">Detail</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div>
+        <a class="btn btn-primary my-2" href="{% url 'authors:authors_list' %}">Back</a>
+    </div>
+
+{% endblock %}

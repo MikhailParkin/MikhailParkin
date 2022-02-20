@@ -23,7 +23,9 @@
 
     {% if user.is_authenticated %}
 
-    <div class="col-md-3"></div>
+    <div class="col-md-3">
+       <a class="btn btn-primary my-2" href="{% url 'authors:post_create' %}">Write post</a>
+    </div>
   <div class="col-md-2">
       <a class="btn btn-light my-2" href="{% url 'myauth:user_detail' user.id %}">Hello {{ user.username }}!</a>
       <a class="btn btn-light my-2" href="{% url 'myauth:logout' %}">Logout</a>

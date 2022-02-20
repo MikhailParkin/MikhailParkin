@@ -14,3 +14,7 @@ Werkzeug~=2.0.2
 alembic~=1.7.5
 django==3.2
 django-debug-toolbar==3.2.3
+PyQt5~=5.15.4
+PyYAML~=6.0
+mysql-connector-python~=8.0.28
+XlsxWriter~=3.0.2

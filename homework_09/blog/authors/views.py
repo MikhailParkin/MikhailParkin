@@ -1,14 +1,24 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
+
 from authors.models import Post
+from authors.forms import PostCreateViewForm
 
 from myauth.models import MyUser
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 
 def index(request):
     return render(request, 'authors/index.html')
+
+
+def list_post_by_author(request, name_id):
+    posts = Post.objects.filter(name_id=name_id).select_related('name').all()
+    context = {'posts': posts}
+    return render(request, 'authors/post_list_author.html', context)
 
 
 class PostsListView(ListView):
@@ -28,13 +38,24 @@ class PostDetailView(DetailView):
 class AuthorsListView(ListView):
     model = MyUser
     template_name = 'authors/author_list.html'
+    paginate_by = 5
 
     def get_queryset(self):
-        qs = super().get_queryset()
-        # qs = qs.values('name_id').annotate(dcount=Count('name_id')).order_by('name_id')
-        # qs = qs.filter('first_name', 'last_name').order_by('name_id')
-        # qs = qs.select_related('name').all()
-        print(qs)
+        qs = MyUser.objects.filter(post__isnull=False)\
+            .values('first_name', 'last_name', 'id')\
+            .annotate(total=Count('id')).order_by('last_name')
         return qs
 
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostCreateViewForm
+
+    def form_valid(self, form):
+        form.instance.name_id = self.request.user.id
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        name_id = self.object.name_id
+        return reverse_lazy('authors:list_post_by_author', kwargs={'name_id': name_id})
 

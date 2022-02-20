@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
-from authors.models import Authors, Post
+from authors.models import Post
+from myauth.models import MyUser
 
 from aiohttp import ClientSession
 import asyncio
@@ -42,7 +43,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         users, posts = data_json()
         for user in users:
-            Authors.objects.get_or_create(name=user['name'], email=user['email'])
+            first_name = user['name'].split(' ', 1)[0]
+            last_name = user['name'].split(' ', 1)[1]
+            myuser = MyUser.objects.create_user(user['username'],
+                                                user['email'],
+                                                user['username'])
+            myuser.first_name = first_name
+            myuser.last_name = last_name
+            myuser.save()
+            # MyUser.objects.get_or_create(username=user['username'],
+            #                              first_name=first_name,
+            #                              last_name=last_name,
+            #                              email=user['email'],
+            #                              password=user['username'])
 
         for post in posts:
             Post.objects.get_or_create(title=post['title'], body=post['body'], name_id=post['userId'])
